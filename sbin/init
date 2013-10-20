@@ -1,5 +1,6 @@
-# This is script is only usefull to dual-boot CM10.2 and B2G.
 #!/sbin/busybox sh
+# This is script is only usefull to dual-boot CM10.2 and B2G.
+
 cd /
 
 busybox mount -t proc proc /proc
@@ -37,6 +38,7 @@ mknod /dev/block/mmcblk0p11 b 259 3
 mknod /dev/block/mmcblk0p12 b 259 4
 mknod /dev/block/loop0 b 7 0
 
+mkdir -p /mnt
 chmod 755 /mnt
 mkdir /preload
 mount -t ext4 -o ro /dev/block/mmcblk0p12 /preload
@@ -46,34 +48,43 @@ SECONDROM=1
 [ -f /preload/build.prop ] || SECONDROM=0
 
 DEFAULTROM=`cat /mnt/.defaultrom`
-if [ "$DEFAULTROM" == "1" ]; then
-  SECONDROM=0
-fi
 
 umount /preload
 umount /mnt
+
+if [ "$DEFAULTROM" == "1" ]; then
+  SECONDROM=0
+fi
 
 rm -rf /res/dev
 mkdir -p /res/dev
 ln -s /dev/block/mmcblk0p10 /res/dev/data
 ln -s /dev/block/mmcblk0p7 /res/dev/cache
-if [ "$SECONDROM" == "0"]; then
+
+
+if [ "$SECONDROM" == "0" ]; then
+  #CYANOGENMOD
   ln -s /dev/block/mmcblk0p9 /res/dev/system
 else
+  #B2G
   ln -s /dev/block/mmcblk0p12 /res/dev/system
 fi
 mount -t ext4 /res/dev/system /system
 
-B2G=0
-[ -d /system/b2g ] && B2G=1
+mv -f /sbin/adbd.jb /sbin/adbd
 
-if [ "$B2G" == 1 ]; then
-    rm -rf /vendor
+B2G=1
+[ -d /system/b2g ] || B2G=0
+
+if [ "$B2G" == "1" ]; then
     cp -a /res/misc/init.b2g/* /
+    #We don't insmod anything in init.rc for the time being (b2g)
+    insmod /lib/modules/Si4709_driver.ko
  else
     mv -f /res/misc/init.cm10.2/* /
-    rm -rf /vendor
 fi
+
+rm -rf /vendor
 
 umount /system
 rm -rf /res/misc/init*

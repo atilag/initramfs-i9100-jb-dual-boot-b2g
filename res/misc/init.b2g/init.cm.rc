@@ -8,10 +8,10 @@ on init
 
 on post-fs-data
     # <b2g>
-    # mkdir /cache/dalvik-cache 0771 system system
-    # chown system system /cache/dalvik-cache
-    # chmod 0771 /cache/dalvik-cache
-    # </b2g>
+    mkdir /cache/dalvik-cache 0771 system system
+    chown system system /cache/dalvik-cache
+    chmod 0771 /cache/dalvik-cache
+    #</b2g>
     mkdir /data/.ssh 0750 root shell
 
     # Run sysinit

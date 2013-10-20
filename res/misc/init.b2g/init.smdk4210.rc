@@ -62,16 +62,16 @@ on boot
     setprop status.battery.level_raw  50
     setprop status.battery.level_scale 9
 
-service notified_event /system/bin/notified_event
-	class main
-    user system
-    group system
-    socket notified_event stream 0660 root system
+#service notified_event /system/bin/notified_event
+#	class main
+#    user system
+#    group system
+#    socket notified_event stream 0660 root system
     
-service tscald /system/bin/tscald /data/data/com.samsung.app.sec_tscal/cal.conf /sys/devices/platform/s3c64xx-ts/set_tscal
-    user root
-    group root
-    oneshot
+#service tscald /system/bin/tscald /data/data/com.samsung.app.sec_tscal/cal.conf #/sys/devices/platform/s3c64xx-ts/set_tscal
+#    user root
+#    group root
+#    oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant \
     -Dnl80211 -iwlan0 -puse_p2p_group_interface=1 -e/data/misc/wifi/entropy.bin
@@ -85,19 +85,19 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     oneshot
 
 #for WiFi MFG(TestMode)
-service mfgloader /system/bin/mfgloader
-    disabled
-    oneshot
+#service mfgloader /system/bin/mfgloader
+#    disabled
+#    oneshot
 
-service wlandutservice /system/bin/wlandutservice
-    user system
-    group wifi net_raw net_admin system inet
-    disabled
-    oneshot
+#service wlandutservice /system/bin/wlandutservice
+#    user system
+#    group wifi net_raw net_admin system inet
+#    disabled
+#    oneshot
 
-service macloader /system/bin/macloader
-    oneshot
-# end of wifi
+#service macloader /system/bin/macloader
+#    oneshot
+## end of wifi
 
 service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
     class main
