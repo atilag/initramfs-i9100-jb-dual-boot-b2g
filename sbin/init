@@ -56,20 +56,13 @@ if [ "$DEFAULTROM" == "1" ]; then
   SECONDROM=0
 fi
 
-rm -rf /res/dev
-mkdir -p /res/dev
-ln -s /dev/block/mmcblk0p10 /res/dev/data
-ln -s /dev/block/mmcblk0p7 /res/dev/cache
-
-
 if [ "$SECONDROM" == "0" ]; then
   #CYANOGENMOD
-  ln -s /dev/block/mmcblk0p9 /res/dev/system
+  mount -t ext4 /dev/block/mmcblk0p9 /system
 else
   #B2G
-  ln -s /dev/block/mmcblk0p12 /res/dev/system
+  mount -t ext4 /dev/block/mmcblk0p12 /system
 fi
-mount -t ext4 /res/dev/system /system
 
 mv -f /sbin/adbd.jb /sbin/adbd
 
