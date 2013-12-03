@@ -75,9 +75,9 @@ if [ "$B2G" == "1" ]; then
     insmod /lib/modules/Si4709_driver.ko
  else
     mv -f /res/misc/init.cm10.2/* /
-    mv -f /lib/modules/*.ko /system/lib/modules
 fi
 
+mv -f /lib/modules/*.ko /system/lib/modules
 rm -rf /vendor
 
 umount /system
